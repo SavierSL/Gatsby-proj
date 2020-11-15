@@ -1,42 +1,91 @@
-import { Link } from "gatsby"
-import PropTypes from "prop-types"
-import React from "react"
+import React, { useEffect, useRef } from "react"
+import { Container } from "../components/Styles/GlobalStyle"
+import {
+  Title,
+  TitleContainer,
+  Line,
+  LayerBlack,
+  LayerWhite,
+  HeaderContent,
+  LineContainer,
+  HeaderContainer,
+  BgHeader,
+  Circle,
+} from "../components/Styles/HeaderStyle"
+import { useGlobalStateContext } from "../components/Context/GlobalContext"
+import gsap from "gsap"
+import CircleImage from "../assets/images/circle.png"
+import { motion } from "framer-motion"
 
-const Header = ({ siteTitle }) => (
-  <header
-    style={{
-      background: `rebeccapurple`,
-      marginBottom: `1.45rem`,
-    }}
-  >
-    <div
-      style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
-      }}
-    >
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: `white`,
-            textDecoration: `none`,
-          }}
-        >
-          {siteTitle}
-        </Link>
-      </h1>
-    </div>
-  </header>
-)
+const Header = () => {
+  const { currentTheme } = useGlobalStateContext()
+  const titleAnimate1 = useRef(null)
+  const titleAnimate2 = useRef(null)
+  const blackLayer = useRef(null)
 
-Header.propTypes = {
-  siteTitle: PropTypes.string,
-}
+  useEffect(() => {
+    gsap.to(titleAnimate1.current, 0.9, {
+      y: 0,
 
-Header.defaultProps = {
-  siteTitle: ``,
+      transition: {
+        duration: 1,
+        ease: [0.6, 0.05, -0.01, 0.9],
+      },
+    })
+    setTimeout(() => {
+      gsap.to(titleAnimate2.current, 0.9, {
+        y: 0,
+
+        transition: {
+          duration: 1,
+          ease: [0.6, 0.05, -0.01, 0.9],
+        },
+      })
+    }, 400)
+    setTimeout(() => {
+      gsap.to(blackLayer.current, 0.7, {
+        x: "100%",
+
+        display: "none",
+        transition: {
+          duration: 1,
+          ease: [0.6, 0.05, -0.01, 0.9],
+        },
+      })
+    }, 1100)
+
+    window.localStorage.setItem("theme", currentTheme)
+    console.log(window.localStorage)
+  }, [])
+  console.log(currentTheme)
+  return (
+    <>
+      <BgHeader />
+      <HeaderContainer>
+        <Container>
+          <Line>
+            <Title ref={titleAnimate1}>We</Title>
+          </Line>
+          <Line>
+            <Title ref={titleAnimate2}>Create</Title>
+          </Line>
+          <Circle>
+            <img src={CircleImage} />
+          </Circle>
+        </Container>
+        <HeaderContent>
+          <LayerBlack ref={blackLayer}></LayerBlack>
+          <LayerWhite>
+            <Container>
+              <h1>High Q. films</h1>
+              <h2>Welcome //</h2>
+              <h4>Capturing Life’s Moments</h4>
+            </Container>
+          </LayerWhite>
+        </HeaderContent>
+      </HeaderContainer>
+    </>
+  )
 }
 
 export default Header

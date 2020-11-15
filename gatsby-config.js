@@ -6,6 +6,8 @@ module.exports = {
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-transition-link`,
+    `gatsby-plugin-page-load-delay`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
